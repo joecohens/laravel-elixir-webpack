@@ -12,13 +12,16 @@
     "webpack",
     "gulp"
   ],
-  "author": { 
-    "name": "Joseph Cohen" 
+  "author": {
+    "name": "Joseph Cohen"
   },
   "license": "MIT",
   "dependencies": {
     "gulp-if": "^1.2.5",
-    "gulp-notify": "^2.0.0"
+    "gulp-notify": "^2.0.0",
+    "gulp-webpack": "~1.1.0",
+    "gulp-uglify": "^1.0.1",
+    "underscore": "^1.7.0"
   },
   "repository": {
     "type": "git",

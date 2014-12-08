@@ -35,7 +35,7 @@ elixir.extend('webpack', function (src, outputDir, options) {
 		return gulp.src(src)
 			.pipe(webpack(options)).on('error', onError)
 			.pipe(gulpif(config.production, uglify()))
-        	.pipe(gulp.dest(options.output || config.jsOutput))
+        	.pipe(gulp.dest(outputDir || config.jsOutput))
         	.pipe(notify({
                 title: 'Laravel Elixir',
                 subtitle: 'Webpack Compiled!',

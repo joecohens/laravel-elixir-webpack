@@ -1,0 +1,31 @@
+{
+  "name": "laravel-elixir-webpack",
+  "version": "0.1.0",
+  "description": "Laravel Elixir Webpack Extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "laravel",
+    "elixir",
+    "webpack",
+    "gulp"
+  ],
+  "author": { 
+    "name": "Joseph Cohen" 
+  },
+  "license": "MIT",
+  "dependencies": {
+    "gulp-if": "^1.2.5",
+    "gulp-notify": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joecohens/laravel-elixir-webpack"
+  },
+  "bugs": {
+    "url": "https://github.com/joecohens/laravel-elixir-webpack/issues"
+  },
+  "homepage": "https://github.com/joecohens/laravel-elixir-webpack"
+}

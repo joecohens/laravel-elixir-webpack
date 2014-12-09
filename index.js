@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-	webpack = require('gulp-webpack'),
+    webpack = require('gulp-webpack'),
     notify = require('gulp-notify');
     gulpif = require('gulp-if'),
     uglify = require('gulp-uglify'),
@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 elixir.extend('webpack', function (src, outputDir, options) {
 
-	var config = this,
+    var config = this,
         baseDir = config.assetsDir + 'js',
         defaultOptions;
 
@@ -20,8 +20,8 @@ elixir.extend('webpack', function (src, outputDir, options) {
 
     options = _.extend(defaultOptions, options);
 
-	gulp.task('webpack', function () {
-		var onError = function(err) {
+    gulp.task('webpack', function () {
+        var onError = function(err) {
             notify.onError({
                 title:    "Laravel Elixir",
                 subtitle: "Webpack Compilation Failed!",
@@ -32,17 +32,17 @@ elixir.extend('webpack', function (src, outputDir, options) {
             this.emit('end');
         };
 
-		return gulp.src(src)
-			.pipe(webpack(options)).on('error', onError)
-			.pipe(gulpif(config.production, uglify()))
-        	.pipe(gulp.dest(outputDir || config.jsOutput))
-        	.pipe(notify({
+        return gulp.src(src)
+            .pipe(webpack(options)).on('error', onError)
+            .pipe(gulpif(config.production, uglify()))
+            .pipe(gulp.dest(outputDir || config.jsOutput))
+            .pipe(notify({
                 title: 'Laravel Elixir',
                 subtitle: 'Webpack Compiled!',
                 icon: __dirname + '/../laravel-elixir/icons/laravel.png',
                 message: ' '
             }));
-	});
+    });
 
     this.registerWatcher('webpack', baseDir + '/**/*.js');
 

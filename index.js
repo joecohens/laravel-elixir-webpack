@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     utilities = require('laravel-elixir/ingredients/commands/Utilities'),
     notification = require('laravel-elixir/ingredients/commands/Notification');
 
-
 elixir.extend('webpack', function (src, options) {
 
     var config = this,
@@ -41,3 +40,4 @@ elixir.extend('webpack', function (src, options) {
 
     return this.queueTask('webpack');
 });
+

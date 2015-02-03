@@ -8,13 +8,14 @@ var gulp = require('gulp'),
     notification = require('laravel-elixir/ingredients/commands/Notification');
 
 
-elixir.extend('webpack', function (src, outputDir, options) {
+elixir.extend('webpack', function (src, options) {
 
-var config = this,
+    var config = this,
         defaultOptions = {
-            debug:         ! config.production,
-            srcDir:        config.assetsDir + 'js',
-            output:        config.jsOutput
+            debug:     ! config.production,
+            watch:     ! config.production,
+            srcDir:    config.assetsDir + 'js',
+            outputDir: config.jsOutput,
         };
 
     options = _.extend(defaultOptions, options);
@@ -32,7 +33,7 @@ var config = this,
         return gulp.src(src)
             .pipe(webpack(options)).on('error', onError)
             .pipe(gulpIf(! options.debug, uglify()))
-            .pipe(gulp.dest(options.output))
+            .pipe(gulp.dest(options.outputDir))
             .pipe(new notification().message('Webpack Compiled!'));
     });
 

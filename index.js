@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     webpack = require('gulp-webpack'),
-    gulpif = require('gulp-if'),
+    gulpIf = require('gulp-if'),
     uglify = require('gulp-uglify'),
     _ = require('underscore'),
     elixir = require('laravel-elixir'),
@@ -40,4 +40,3 @@ elixir.extend('webpack', function (src, options) {
 
     return this.queueTask('webpack');
 });
-

@@ -20,8 +20,6 @@ elixir.extend('webpack', function (src, options) {
     options = _.extend(defaultOptions, options);
     src = "./" + utilities.buildGulpSrc(src, options.srcDir);
 
-    options = _.extend(defaultOptions, options);
-
     gulp.task('webpack', function () {
 
         var onError = function(e) {

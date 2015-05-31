@@ -12,7 +12,7 @@ elixir.extend('webpack', function (src, options) {
     var config = this,
         defaultOptions = {
             debug:     ! config.production,
-            watch:     ! config.production,
+            //watch:     ! config.production,
             srcDir:    config.assetsDir + 'js',
             outputDir: config.jsOutput,
         };
@@ -34,7 +34,6 @@ elixir.extend('webpack', function (src, options) {
             .pipe(new notification().message('Webpack Compiled!'));
     });
 
-    this.registerWatcher('webpack', options.srcDir + '/**/*.js');
-
+    this.registerWatcher('webpack', config.assetsDir + '/**/*.js');
     return this.queueTask('webpack');
 });

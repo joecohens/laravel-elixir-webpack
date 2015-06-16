@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     webpack = require('gulp-webpack'),
     gulpIf = require('gulp-if'),
     uglify = require('gulp-uglify'),
+    gulpFilter = require('gulp-filter'),
     _ = require('underscore'),
     elixir = require('laravel-elixir'),
     utilities = require('laravel-elixir/ingredients/commands/Utilities'),
@@ -9,6 +10,7 @@ var gulp = require('gulp'),
 
 elixir.extend('webpack', function (src, options) {
     var config = this;
+    var filter = gulpFilter(['*.js']);
 
     options = _.extend({
         debug:     ! config.production,
@@ -26,7 +28,9 @@ elixir.extend('webpack', function (src, options) {
 
         return gulp.src(src)
             .pipe(webpack(options)).on('error', onError)
+            .pipe(filter)
             .pipe(gulpIf(! options.debug, uglify()))
+            .pipe(filter.restore())
             .pipe(gulp.dest(options.outputDir))
             .pipe(new notification().message('Webpack Compiled!'));
     });

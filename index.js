@@ -1,39 +1,50 @@
 var gulp = require('gulp'),
-    webpack = require('gulp-webpack'),
-    gulpIf = require('gulp-if'),
-    uglify = require('gulp-uglify'),
+    webpack = require('webpack-stream'),
     gulpIgnore = require('gulp-ignore'),
     _ = require('underscore'),
-    elixir = require('laravel-elixir'),
-    utilities = require('laravel-elixir/ingredients/commands/Utilities'),
-    notification = require('laravel-elixir/ingredients/commands/Notification');
+    Elixir = require('laravel-elixir');
 
-elixir.extend('webpack', function (src, options) {
-    var config = this;
+var $ = Elixir.Plugins;
+var config = Elixir.config;
 
+Elixir.extend('webpack', function (src, options) {
     options = _.extend({
         debug:     ! config.production,
-        srcDir:    config.assetsDir + 'js',
-        outputDir: config.jsOutput,
+        srcDir:    config.get('assets.js.folder'),
+        outputDir: config.get('public.js.outputFolder'),
     }, options);
 
-    src = "./" + utilities.buildGulpSrc(src, options.srcDir);
+    var paths = prepGulpPaths(src, options.srcDir, outputDir);
 
-    gulp.task('webpack', function () {
-        var onError = function(e) {
-            new notification().error(e, 'Webpack Compilation Failed!');
-            this.emit('end');
-        };
+    this.log(paths.src, paths.output);
 
-        return gulp.src(src)
-            .pipe(webpack(options)).on('error', onError)
-            .pipe(gulpIgnore.include('*.js'))
-            .pipe(gulpIf(! options.debug, uglify()))
-            .pipe(gulp.dest(options.outputDir))
-            .pipe(new notification().message('Webpack Compiled!'));
-    });
+    new Elixir.Task('webpack', function () {
+        return (
+            gulp.src(src)
+                .pipe(webpack(options))
+                .on('error', function(e) {
+                    new Elixir.Notification('Webpack Compilation Failed!');
 
-    this.registerWatcher('webpack', config.assetsDir + '/**/*.js');
-
-    return this.queueTask('webpack');
+                    this.emit('end');
+                })
+                .pipe(gulpIgnore.include('*.js'))
+                .pipe($.if(! options.debug, $.uglify()))
+                .pipe(gulp.dest(paths.output.baseDir))
+                .pipe(new Elixir.Notification('Webpack Compiled!'))
+        );
+    })
+    .watch(config.get('assets.js.folder') + '/**/*.js');
 });
+
+/**
+ * Prep the Gulp src and output paths.
+ *
+ * @param {string|array} src
+ * @param {string|null}  baseDir
+ * @param {string|null}  output
+ */
+var prepGulpPaths = function(src, baseDir, output) {
+    return new Elixir.GulpPaths()
+        .src(src, baseDir)
+        .output(output, 'app.js');
+};

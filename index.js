@@ -16,7 +16,7 @@ Elixir.extend('webpack', function (src, options) {
 
     var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
 
-    this.log(paths.src, paths.output);
+    // this.log(paths.src, paths.output);
 
     new Elixir.Task('webpack', function () {
         return (

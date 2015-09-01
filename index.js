@@ -17,6 +17,8 @@ Elixir.extend('webpack', function (src, options) {
     var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
 
     new Elixir.Task('webpack', function () {
+        this.log(paths.src, paths.output);
+
         return (
             gulp.src(src)
                 .pipe(webpack(options))

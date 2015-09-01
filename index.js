@@ -14,9 +14,7 @@ Elixir.extend('webpack', function (src, options) {
         outputDir: config.get('public.js.outputFolder'),
     }, options);
 
-    var paths = prepGulpPaths(src, options.srcDir, outputDir);
-
-    this.log(paths.src, paths.output);
+    var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
 
     new Elixir.Task('webpack', function () {
         return (

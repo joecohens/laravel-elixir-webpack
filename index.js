@@ -33,7 +33,7 @@ Elixir.extend('webpack', function (src, options) {
                 .pipe(new Elixir.Notification('Webpack Compiled!'))
         );
     })
-    .watch(config.get('assets.js.folder') + '/**/*.js');
+    .watch(options.srcDir + '/**/*');
 });
 
 /**

@@ -14,13 +14,13 @@ Elixir.extend('webpack', function (src, options) {
         outputDir: config.get('public.js.outputFolder'),
     }, options);
 
-    var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
-
-    this.log(paths.src, paths.output);
-
     new Elixir.Task('webpack', function () {
+        var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
+
+        this.log(paths.src, paths.output);
+
         return (
-            gulp.src(src)
+            gulp.src(paths.src.path)
                 .pipe(webpack(options))
                 .on('error', function(e) {
                     new Elixir.Notification('Webpack Compilation Failed!');
@@ -33,7 +33,7 @@ Elixir.extend('webpack', function (src, options) {
                 .pipe(new Elixir.Notification('Webpack Compiled!'))
         );
     })
-    .watch(config.get('assets.js.folder') + '/**/*.js');
+    .watch(options.srcDir + '/**/*');
 });
 
 /**

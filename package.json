@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "underscore": "^1.8.3",
-    "laravel-elixir": "^4.0",
+    "laravel-elixir": "^4.0"
   },
   "repository": {
     "type": "git",

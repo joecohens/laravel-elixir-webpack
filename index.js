@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-    webpack = require('webpack-stream'),
+    webpack = require('webpack'),
     gulpIgnore = require('gulp-ignore'),
     _ = require('underscore'),
     Elixir = require('laravel-elixir');
@@ -9,31 +9,48 @@ var config = Elixir.config;
 
 Elixir.extend('webpack', function (src, options) {
     options = _.extend({
-        debug:     ! config.production,
-        srcDir:    config.get('assets.js.folder'),
-        outputDir: config.get('public.js.outputFolder'),
+        debug:     !config.production,
+        minimize:  !config.production,
+        entry: src,
+        output: { 
+            path: config.publicPath + '/' + config.js.outputFolder,
+            filename: '[name].js',
+            chunkFilename: "[name].chunk.js",
+        },
     }, options);
 
+    var watcher;
+
     new Elixir.Task('webpack', function () {
-        var paths = prepGulpPaths(src, options.srcDir, options.outputDir);
+        if(watcher) return;
 
-        this.log(paths.src, paths.output);
+        watcher = webpack(options).watch({ // watch options:
+            aggregateTimeout: 300, // wait so long for more changes
+            poll: true // use polling instead of native watchers
+            // pass a number to set the polling interval
+        }, function(err, stats) {
+            if(err)
+            {
+                new Elixir.Notification('Webpack Compilation Failed!');
+                console.error(err);
+            }
+            else
+            {
+                var jsonStats = stats.toJson();
+                if(jsonStats.errors.length > 0)
+                {
+                    new Elixir.Notification().error(jsonStats.errors, 'Webpack Compilation Failed!');
+                }
+                else if(jsonStats.warnings.length > 0)
+                {
+                    console.warn(jsonStats.warnings);
+                }
 
-        return (
-            gulp.src(paths.src.path)
-                .pipe(webpack(options))
-                .on('error', function(e) {
-                    new Elixir.Notification('Webpack Compilation Failed!');
-
-                    this.emit('end');
-                })
-                .pipe(gulpIgnore.include('*.js'))
-                .pipe($.if(! options.debug, $.uglify()))
-                .pipe(gulp.dest(paths.output.baseDir))
-                .pipe(new Elixir.Notification('Webpack Compiled!'))
-        );
-    })
-    .watch(options.srcDir + '/**/*');
+                console.log(stats.toString({colors:true,chunks:false}));
+                new Elixir.Notification('Webpack Complete!');
+            }
+        });
+    }).watch(config.assetsPath + '/' + config.js.folder + '/**/*');
 });
 
 /**

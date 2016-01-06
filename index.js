@@ -12,6 +12,9 @@ Elixir.extend('webpack', function (src, options) {
         debug:     ! config.production,
         srcDir:    config.get('assets.js.folder'),
         outputDir: config.get('public.js.outputFolder'),
+        output: {
+          filename: src
+        }
     }, options);
 
     new Elixir.Task('webpack', function () {

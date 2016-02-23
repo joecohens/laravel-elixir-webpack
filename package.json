@@ -1,6 +1,6 @@
 {
   "name": "laravel-elixir-webpack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Laravel Elixir Webpack Extension",
   "main": "index.js",
   "scripts": {
